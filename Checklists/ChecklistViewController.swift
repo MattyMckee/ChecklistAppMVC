@@ -11,7 +11,32 @@ import UIKit
 class ChecklistViewController: UITableViewController {
     
     var items: [ChecklistItem]
-
+    
+    @IBAction func addItem(_ sender: Any) {
+        let newRowIndex = items.count
+        
+        let item = ChecklistItem()
+     //   item.text = "I am a new row"
+        
+        
+        let titles = ["First todo item", "I need something to do", "what to do",
+                      "cut the grass", "clean the motorbike"]
+        
+        let randomNUmber = arc4random_uniform(UInt32(titles.count))
+        let randomTitle = titles[Int(randomNUmber)]
+        
+        item.text = randomTitle
+        item.checked = true
+        items.append(item)
+        
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        
+        tableView.insertRows(at: indexPaths, with: .automatic)
+        
+        
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         
         items = [ChecklistItem]()
@@ -44,7 +69,7 @@ class ChecklistViewController: UITableViewController {
         let row5Item = ChecklistItem()
         row5Item.text = "Learn Android"
         row5Item.checked = false
-        items.append(row4Item)
+        items.append(row5Item)
         
         let row6Item = ChecklistItem()
         row6Item.text = "Play Video Games"
@@ -67,6 +92,14 @@ class ChecklistViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        items.remove(at: indexPath.row)
+        let indexPaths = [indexPath]
+        tableView.deleteRows(at: indexPaths, with: .automatic)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
